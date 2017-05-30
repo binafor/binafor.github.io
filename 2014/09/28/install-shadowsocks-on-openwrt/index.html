@@ -1,0 +1,533 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>install-shadowsocks-on-openwrt | 晚期拖延症患者</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="binafor">
+    
+
+    
+    <meta name="description" content="第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，w">
+<meta name="keywords" content="shadowsocks,openwrt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="install-shadowsocks-on-openwrt">
+<meta property="og:url" content="http://binafor.github.io/2014/09/28/install-shadowsocks-on-openwrt/index.html">
+<meta property="og:site_name" content="晚期拖延症患者">
+<meta property="og:description" content="第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，w">
+<meta property="og:image" content="http://mtkxsw.qiniudn.com/ruyiyun1a.png">
+<meta property="og:updated_time" content="2017-05-30T02:08:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="install-shadowsocks-on-openwrt">
+<meta name="twitter:description" content="第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，w">
+<meta name="twitter:image" content="http://mtkxsw.qiniudn.com/ruyiyun1a.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="晚期拖延症患者" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/Angelo-Cammalleri-Beach.jpg" alt="晚期拖延症患者" title="晚期拖延症患者"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="晚期拖延症患者">晚期拖延症患者</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:binafor.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/09/28/install-shadowsocks-on-openwrt/" title="install-shadowsocks-on-openwrt" itemprop="url">install-shadowsocks-on-openwrt</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="binafor" target="_blank" itemprop="author">binafor</a>
+		
+  <p class="article-time">
+    <time datetime="2014-09-28T14:35:13.000Z" itemprop="datePublished"> 发表于 2014-09-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			
+		
+		</div>
+		
+		<p>　　第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。<br>　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，who care? 就这么愉快的决定剁手了。<br>　　废话不多说了，自己对路由器了解也不多，随意看了点，路由器上现在还是如意云修改的版本。 <img src="http://mtkxsw.qiniudn.com/ruyiyun1a.png" alt=""><br>　　 路由器固件主要看cpu，路由器上的cpu又分为几种架构，所对应的编译出来包也不同.如<br>   <a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">http://sourceforge.net/p/openwrt-dist/wiki/Home/</a>所示<br>| 架构 | CPU型号 |<br>|—–|——–|<br>|  ar71xx       |     AR7xxx/AR9xxx/QCA9xxx     |<br>|  atheros       |     AR231x/AR5xxx    |<br>|  bcm53xx       |     BCM47xx/53xx (ARM CPU)   |<br>|  brcm47xx      |     BCM47xx/53xx (MIPS)   |<br>|  brcm63xx     |     BCM63xx   |<br>|  ramips_24kec |     RT3x5x/RT5350/MT7620a/MT7620n/MT7621   |<br>本渣cpu对号入座应该是ramips架构了。。。这个千万不能搞错。<br>　　 openwrt系统对应的包管理工具是opkg。跟yum apt类似，差不了太多，那就先 opkg update一下吧。结果发现自带意云官方源种的包少的可怜，那就只有自己亲自动手找个源了。问google好了，<a href="http://downloads.openwrt.org.cn/PandoraBox/ralink/mt7620/packages/" target="_blank" rel="external">PandoraBox</a>，就是你了。修改 /etc/opkg.conf，一眼就看的明白。刚才的sourceforge页面的openwrt是已经编译好的最新版本(支持rc-md5)加密方式。就是这个了，把ipk包下载到U盘上，U盘已经自动挂载好，挂载的位置是 /mnt/sda1,有U盘还是比较方便的，至少不用憋屈在16M的小小空间里了。<br>   openwrt自带wget，直接cd到U盘目录(没有U盘直接用temp路径好了) opkg install <a href="http://urlofshadowsocks" target="_blank" rel="external">http://urlofshadowsocks</a> 好了。。失败。。。不过openwrt-dist的这个作者给出了手动安装的说明：</p>
+<pre><code>手动安装
+解压 ipk 包: tar xzf {packagename}.ipk
+解压 data 包完成安装: tar xzf data.tar.gz -C /
+删除残留: rm control.tar.gz data.tar.gz debian-binary
+注: 上面 3 条命令注意复制完整并替换 packagename
+手动安装后没有卸载信息, 建议只在自动安装失败时使用
+如需要卸载, 可以直接删除步骤 2 中解压出的文件
+</code></pre><p>　　用7zip尝试打开压缩包，发现每个安装包基本大改即使打包　<code>control.tar.gz</code> <code>data.tar.gz</code> <code>debian-binary</code>　这三个文件，看手动安装的说明，<code>data.tar.gz</code>才是其中的核心包，再用7zip打开，一切明了了，安装过程大概就是解压data.tar.gz 里的对应目录到跟目录下。<br>　　现在可以测试下是否可以启动shadowsocks了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# ss-local</div></pre></td></tr></table></figure></p>
+<p>　　提示缺少<code>libpolarssl</code>,依葫芦画瓢装一次，提示缺少<code>libpolarssl.so.7</code>,<code>ln -s</code> 欺骗一个好了;<code>ss-local</code>现在启动应该不会报错了，现在应该把自己的shadowsocks配置信息填写到<code>/etc/shadowsocks.conf</code>中，json配置格式，注意用<code>双引号</code>。<br>　　启动shadowsocks:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# /etc/init.d/shadowsocks start  #启动shadowsocks</div><div class="line">root@xRouter:~# /etc/init.d/shadowsocks enable #设置路由器开机自启shadowsocks</div></pre></td></tr></table></figure></p>
+<p>　　现在你设置的<code>ss-local</code>端口应该打开了，<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# netstat -ntlp</div></pre></td></tr></table></figure></p>
+<p>　　此处应该显示你的端口已经开放，在PC上验证下<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">telnet routerip port</div></pre></td></tr></table></figure></p>
+<p>　　如果没有被拒绝就是打开了。<br>　　总结：openwrt操作起来跟原生linux差不多，该有的命令基本都有，没有的可以自行安装。所以可玩性大大提高了，不过openwrt 不支持硬NAT 与多核cpu 的利用是个硬伤。<br>　　说明：本文没有布置路由器上的智能翻墙，只起到了在路由器上打开一个socks5端口代理的作用.<br>参考：<br>1.<a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">OpenWRT-dist项目</a><br>2.<a href="http://softwaredownload.gitbooks.io/openwrt-fanqiang/content/" target="_blank" rel="external">OpenWrt智能、自动、透明翻墙路由器教程</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/路由器/">路由器</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shadowsocks/">shadowsocks</a><a href="/tags/openwrt/">openwrt</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://binafor.github.io/2014/09/28/install-shadowsocks-on-openwrt/" data-title="install-shadowsocks-on-openwrt | 晚期拖延症患者" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/10/25/在opensuse上调整外接显示器支持最高分辨率/" title="在opensuse上调整外接显示器支持最高分辨率">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在opensuse上调整外接显示器支持最高分辨率</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/05/02/unhappy-vps-shopping/"  title="unhappy-vps-shopping">
+ <strong>下一篇：</strong><br/> 
+ <span>unhappy-vps-shopping
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/php/" title="php">php<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/vps/" title="vps">vps<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/路由器/" title="路由器">路由器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Yaf/" title="Yaf">Yaf<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shadowsocks/" title="shadowsocks">shadowsocks<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/opensuse/" title="opensuse">opensuse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xrandr/" title="xrandr">xrandr<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="binafor">binafor</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
