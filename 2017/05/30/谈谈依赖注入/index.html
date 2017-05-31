@@ -4,24 +4,24 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Yaf单入口实现多模块 | 晚期拖延症患者</title>
+    <title>谈谈依赖注入 | 晚期拖延症患者</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="binafor">
     
 
     
-    <meta name="description" content="众所周知，Yaf框架的Yaf_Dispatcher::setDefaultController形同虚设，无法实现设置默认入口（无力吐槽）。所以假如要分两个模块，我开始使用了双入口文件的方法（一个index.php,一个admin.php）。　　这个完全是没办法的办法，这样下来用admin.php文件作为入口的模块的URL中，就会有个非常难看的admin.php在中间。当然我们也通过webser">
-<meta name="keywords" content="Yaf,PHP">
+    <meta name="description" content="什么是依赖注入　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我">
+<meta name="keywords" content="依赖注入,设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Yaf单入口实现多模块">
-<meta property="og:url" content="http://binafor.github.io/2015/01/07/Yaf单入口实现多程序/index.html">
+<meta property="og:title" content="谈谈依赖注入">
+<meta property="og:url" content="http://binafor.github.io/2017/05/30/谈谈依赖注入/index.html">
 <meta property="og:site_name" content="晚期拖延症患者">
-<meta property="og:description" content="众所周知，Yaf框架的Yaf_Dispatcher::setDefaultController形同虚设，无法实现设置默认入口（无力吐槽）。所以假如要分两个模块，我开始使用了双入口文件的方法（一个index.php,一个admin.php）。　　这个完全是没办法的办法，这样下来用admin.php文件作为入口的模块的URL中，就会有个非常难看的admin.php在中间。当然我们也通过webser">
-<meta property="og:updated_time" content="2017-05-30T02:08:50.000Z">
+<meta property="og:description" content="什么是依赖注入　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我">
+<meta property="og:updated_time" content="2017-05-31T13:09:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Yaf单入口实现多模块">
-<meta name="twitter:description" content="众所周知，Yaf框架的Yaf_Dispatcher::setDefaultController形同虚设，无法实现设置默认入口（无力吐槽）。所以假如要分两个模块，我开始使用了双入口文件的方法（一个index.php,一个admin.php）。　　这个完全是没办法的办法，这样下来用admin.php文件作为入口的模块的URL中，就会有个非常难看的admin.php在中间。当然我们也通过webser">
+<meta name="twitter:title" content="谈谈依赖注入">
+<meta name="twitter:description" content="什么是依赖注入　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我">
 
     
     <link rel="alternative" href="/atom.xml" title="晚期拖延症患者" type="application/atom+xml">
@@ -81,14 +81,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/01/07/Yaf单入口实现多程序/" title="Yaf单入口实现多模块" itemprop="url">Yaf单入口实现多模块</a>
+      <a href="/2017/05/30/谈谈依赖注入/" title="谈谈依赖注入" itemprop="url">谈谈依赖注入</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="binafor" target="_blank" itemprop="author">binafor</a>
 		
   <p class="article-time">
-    <time datetime="2015-01-07T12:14:15.000Z" itemprop="datePublished"> 发表于 2015-01-07</time>
+    <time datetime="2017-05-30T02:36:59.000Z" itemprop="datePublished"> 发表于 2017-05-30</time>
     
   </p>
 </header>
@@ -97,28 +97,20 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是依赖注入"><span class="toc-number">1.</span> <span class="toc-text">什么是依赖注入</span></a></li></ol>
 		
 		</div>
 		
-		<p>　　众所周知，Yaf框架的<code>Yaf_Dispatcher::setDefaultController</code>形同虚设，无法实现设置默认入口（无力吐槽）。所以假如要分两个模块，我开始使用了双入口文件的方法（一个index.php,一个admin.php）。<br>　　这个完全是没办法的办法，这样下来用admin.php文件作为入口的模块的URL中，就会有个非常难看的admin.php在中间。当然我们也通过webserver rewrite解决。<br>　　今天偶然在Google翻到鸟哥写的Yaf翻译文档<a href="https://github.com/laruence/php-yaf-doc/blob/master/zh/yaf_route_rewrite/construct.xml" target="_blank" rel="external">点这里</a>。看到鸟哥这里有一段这样的：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">   <span class="comment">/**</span></div><div class="line">    * 使用动态结果作为action名</div><div class="line">    */</div><div class="line">    $config = <span class="keyword">array</span>(</div><div class="line">        <span class="string">"name"</span> =&gt; <span class="keyword">array</span>(</div><div class="line">           <span class="string">"type"</span>  =&gt; <span class="string">"rewrite"</span>,        <span class="comment">//Yaf_Route_Rewrite route</span></div><div class="line">           <span class="string">"match"</span> =&gt; <span class="string">"/user-list/:a/:id"</span>, <span class="comment">//match only /user-list/开头的</span></div><div class="line">           <span class="string">"route"</span> =&gt; <span class="keyword">array</span>(</div><div class="line">               <span class="string">'controller'</span> =&gt; <span class="string">"user"</span>,  <span class="comment">//route to user controller,</span></div><div class="line">               <span class="string">'action'</span>     =&gt; <span class="string">":a"</span>,  <span class="comment">//使用动态的action</span></div><div class="line">           ),</div><div class="line">        ),</div><div class="line">    );</div><div class="line">    Yaf_Dispatcher::getInstance()-&gt;getRouter()-&gt;addConfig(</div><div class="line">        <span class="keyword">new</span> Yaf_Config_Simple($config)</div><div class="line">    );</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
-<p>　　我擦，这不就是我想要的吗，rewrite动态控制器、动作。我以前试过这样写路由结果添加失败。再往上面看了一点（as of 2.3.0),我表示软件还是要用最新的（测试服务器的yaf版本为2.2.9stable）。分析了一下，完全可干啊。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">    $config = <span class="keyword">array</span>(</div><div class="line">        <span class="string">"name"</span> =&gt; <span class="keyword">array</span>(</div><div class="line">           <span class="string">"type"</span>  =&gt; <span class="string">"rewrite"</span>,        <span class="comment">//Yaf_Route_Rewrite route</span></div><div class="line">           <span class="string">"match"</span> =&gt; <span class="string">"/admin/:controller/:action"</span>, <span class="comment">//match only /admin/开头的</span></div><div class="line">           <span class="string">"route"</span> =&gt; <span class="keyword">array</span>(</div><div class="line">               <span class="string">'controller'</span> =&gt; <span class="string">":controller"</span>,  <span class="comment">//使用动态的controller,</span></div><div class="line">               <span class="string">'action'</span>     =&gt; <span class="string">":action"</span>,  <span class="comment">//使用动态的action</span></div><div class="line">           ),</div><div class="line">        ),</div><div class="line">    );</div><div class="line">    Yaf_Dispatcher::getInstance()-&gt;getRouter()-&gt;addConfig(</div><div class="line">    	<span class="keyword">new</span> Yaf_Config_Simple($config)</div><div class="line">    );</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
-<p>　　admin就指代admin.php模块，然后根据生效的路由模块来判断应该分发到哪个模块。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">//Yaf_Plugin_Abstract </span></div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">routerShutdown</span><span class="params">(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response)</span> </span>&#123;</div><div class="line">		Yaf_Dispatcher::getInstance()-&gt;getRouter()-&gt;getCurrentRoute();</div><div class="line">	&#125;</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
-<p>　　根据这个标志就能完全分清楚应该访问哪个模块了有木有。<br>　　这样一个rewrite模式路由就完全搞定了需求。话说Yaf框架真的是越来越强大了。</p>
+		<h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？<br>　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。<br>　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我可以吃米饭、饺子、水果等，但是我要求这些东西要能给我提供能量。那么这里抽象的是中餐，需求（接口）是补充能量，实际的动作（实例）是吃米饭、饺子、水果等。<br>　　<br>　　未完结待续。。。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/php/">php</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Yaf/">Yaf</a><a href="/tags/PHP/">PHP</a>
+  <span></span> <a href="/tags/依赖注入/">依赖注入</a><a href="/tags/设计模式/">设计模式</a>
   </div>
 
 </div>
@@ -127,7 +119,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://binafor.github.io/2015/01/07/Yaf单入口实现多程序/" data-title="Yaf单入口实现多模块 | 晚期拖延症患者" data-tsina="null" class="share clearfix">
+	  <div data-url="http://binafor.github.io/2017/05/30/谈谈依赖注入/" data-title="谈谈依赖注入 | 晚期拖延症患者" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -140,19 +132,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/05/30/谈谈依赖注入/" title="谈谈依赖注入">
-  <strong>上一篇：</strong><br/>
-  <span>
-  谈谈依赖注入</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/10/25/在opensuse上调整外接显示器支持最高分辨率/"  title="在opensuse上调整外接显示器支持最高分辨率">
+<a href="/2015/01/07/Yaf单入口实现多程序/"  title="Yaf单入口实现多模块">
  <strong>下一篇：</strong><br/> 
- <span>在opensuse上调整外接显示器支持最高分辨率
+ <span>Yaf单入口实现多模块
 </span>
 </a>
 </div>
@@ -167,7 +151,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是依赖注入"><span class="toc-number">1.</span> <span class="toc-text">什么是依赖注入</span></a></li></ol>
  
   </div>
 

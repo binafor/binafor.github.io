@@ -81,6 +81,61 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/05/30/谈谈依赖注入/" title="谈谈依赖注入" itemprop="url">谈谈依赖注入</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="binafor" target="_blank" itemprop="author">binafor</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-30T02:36:59.000Z" itemprop="datePublished"> 发表于 2017-05-30</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？<br>　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。<br>　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我可以吃米饭、饺子、水果等，但是我要求这些东西要能给我提供能量。那么这里抽象的是中餐，需求（接口）是补充能量，实际的动作（实例）是吃米饭、饺子、水果等。<br>　　<br>　　未完结待续。。。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/依赖注入/">依赖注入</a><a href="/tags/设计模式/">设计模式</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/01/07/Yaf单入口实现多程序/" title="Yaf单入口实现多模块" itemprop="url">Yaf单入口实现多模块</a>
   </h1>
   <p class="article-author">By
@@ -227,7 +282,43 @@
 </header>
     <div class="article-content">
         
-        <p>　　第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。<br>　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，who care? 就这么愉快的决定剁手了。<br>　　废话不多说了，自己对路由器了解也不多，随意看了点，路由器上现在还是如意云修改的版本。 <img src="http://mtkxsw.qiniudn.com/ruyiyun1a.png" alt=""><br>　　 路由器固件主要看cpu，路由器上的cpu又分为几种架构，所对应的编译出来包也不同.如<br>   <a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">http://sourceforge.net/p/openwrt-dist/wiki/Home/</a>所示<br>| 架构 | CPU型号 |<br>|—–|——–|<br>|  ar71xx       |     AR7xxx/AR9xxx/QCA9xxx     |<br>|  atheros       |     AR231x/AR5xxx    |<br>|  bcm53xx       |     BCM47xx/53xx (ARM CPU)   |<br>|  brcm47xx      |     BCM47xx/53xx (MIPS)   |<br>|  brcm63xx     |     BCM63xx   |<br>|  ramips_24kec |     RT3x5x/RT5350/MT7620a/MT7620n/MT7621   |<br>本渣cpu对号入座应该是ramips架构了。。。这个千万不能搞错。<br>　　 openwrt系统对应的包管理工具是opkg。跟yum apt类似，差不了太多，那就先 opkg update一下吧。结果发现自带意云官方源种的包少的可怜，那就只有自己亲自动手找个源了。问google好了，<a href="http://downloads.openwrt.org.cn/PandoraBox/ralink/mt7620/packages/" target="_blank" rel="external">PandoraBox</a>，就是你了。修改 /etc/opkg.conf，一眼就看的明白。刚才的sourceforge页面的openwrt是已经编译好的最新版本(支持rc-md5)加密方式。就是这个了，把ipk包下载到U盘上，U盘已经自动挂载好，挂载的位置是 /mnt/sda1,有U盘还是比较方便的，至少不用憋屈在16M的小小空间里了。<br>   openwrt自带wget，直接cd到U盘目录(没有U盘直接用temp路径好了) opkg install <a href="http://urlofshadowsocks" target="_blank" rel="external">http://urlofshadowsocks</a> 好了。。失败。。。不过openwrt-dist的这个作者给出了手动安装的说明：</p>
+        <p>　　第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。<br>　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，who care? 就这么愉快的决定剁手了。<br>　　废话不多说了，自己对路由器了解也不多，随意看了点，路由器上现在还是如意云修改的版本。 <img src="http://mtkxsw.qiniudn.com/ruyiyun1a.png" alt=""><br>　　 路由器固件主要看cpu，路由器上的cpu又分为几种架构，所对应的编译出来包也不同.如<br>   <a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">http://sourceforge.net/p/openwrt-dist/wiki/Home/</a>所示</p>
+<table>
+<thead>
+<tr>
+<th>架构</th>
+<th>CPU型号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ar71xx</td>
+<td>AR7xxx/AR9xxx/QCA9xxx</td>
+</tr>
+<tr>
+<td>atheros</td>
+<td>AR231x/AR5xxx</td>
+</tr>
+<tr>
+<td>bcm53xx</td>
+<td>BCM47xx/53xx (ARM CPU)</td>
+</tr>
+<tr>
+<td>brcm47xx</td>
+<td>BCM47xx/53xx (MIPS)</td>
+</tr>
+<tr>
+<td>brcm63xx</td>
+<td>BCM63xx</td>
+</tr>
+<tr>
+<td>ramips_24kec</td>
+<td>RT3x5x/RT5350/MT7620a/MT7620n/MT7621</td>
+</tr>
+</tbody>
+</table>
+<pre><code>本渣cpu对号入座应该是ramips架构了。。。这个千万不能搞错。
+</code></pre><p>　　 openwrt系统对应的包管理工具是opkg。跟<code>yum</code> <code>apt</code>类似，差不了太多，那就先 <code>opkg update</code>一下吧。结果发现自带意云官方源种的包少的可怜，那就只有自己亲自动手找个源了。问google好了，<a href="http://downloads.openwrt.org.cn/PandoraBox/ralink/mt7620/packages/" target="_blank" rel="external">PandoraBox</a>，就是你了。修改<code>/etc/opkg.conf</code>，一眼就看的明白。刚才的sourceforge页面的openwrt是已经编译好的最新版本(支持rc-md5)加密方式。就是这个了，把ipk包下载到U盘上，U盘已经自动挂载好，挂载的位置是 <code>/mnt/sda1</code>,有U盘还是比较方便的，至少不用憋屈在16M的小小空间里了。<br>   openwrt自带wget，直接cd到U盘目录(没有U盘直接用temp路径好了) <code>opkg install http://urlofshadowsocks</code>好了。。失败。。。不过<code>openwrt-dist</code>的这个作者给出了手动安装的说明：</p>
 <pre><code>手动安装
 解压 ipk 包: tar xzf {packagename}.ipk
 解压 data 包完成安装: tar xzf data.tar.gz -C /
@@ -238,7 +329,7 @@
 </code></pre><p>　　用7zip尝试打开压缩包，发现每个安装包基本大改即使打包　<code>control.tar.gz</code> <code>data.tar.gz</code> <code>debian-binary</code>　这三个文件，看手动安装的说明，<code>data.tar.gz</code>才是其中的核心包，再用7zip打开，一切明了了，安装过程大概就是解压data.tar.gz 里的对应目录到跟目录下。<br>　　现在可以测试下是否可以启动shadowsocks了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# ss-local</div></pre></td></tr></table></figure></p>
 <p>　　提示缺少<code>libpolarssl</code>,依葫芦画瓢装一次，提示缺少<code>libpolarssl.so.7</code>,<code>ln -s</code> 欺骗一个好了;<code>ss-local</code>现在启动应该不会报错了，现在应该把自己的shadowsocks配置信息填写到<code>/etc/shadowsocks.conf</code>中，json配置格式，注意用<code>双引号</code>。<br>　　启动shadowsocks:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# /etc/init.d/shadowsocks start  #启动shadowsocks</div><div class="line">root@xRouter:~# /etc/init.d/shadowsocks enable #设置路由器开机自启shadowsocks</div></pre></td></tr></table></figure></p>
 <p>　　现在你设置的<code>ss-local</code>端口应该打开了，<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# netstat -ntlp</div></pre></td></tr></table></figure></p>
-<p>　　此处应该显示你的端口已经开放，在PC上验证下<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">telnet routerip port</div></pre></td></tr></table></figure></p>
+<p>　　此处应该显示你的端口已经开放，在PC上验证下<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">telnet routerIP port</div></pre></td></tr></table></figure></p>
 <p>　　如果没有被拒绝就是打开了。<br>　　总结：openwrt操作起来跟原生linux差不多，该有的命令基本都有，没有的可以自行安装。所以可玩性大大提高了，不过openwrt 不支持硬NAT 与多核cpu 的利用是个硬伤。<br>　　说明：本文没有布置路由器上的智能翻墙，只起到了在路由器上打开一个socks5端口代理的作用.<br>参考：<br>1.<a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">OpenWRT-dist项目</a><br>2.<a href="http://softwaredownload.gitbooks.io/openwrt-fanqiang/content/" target="_blank" rel="external">OpenWrt智能、自动、透明翻墙路由器教程</a></p>
 
         
@@ -258,7 +349,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/shadowsocks/">shadowsocks</a><a href="/tags/openwrt/">openwrt</a>
+  <span></span> <a href="/tags/shadowsocks/">shadowsocks</a><a href="/tags/openwrt/">openwrt</a><a href="/tags/router/">router</a>
   </div>
 
 </div>
@@ -398,19 +489,11 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Yaf/" title="Yaf">Yaf<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Yaf/" title="Yaf">Yaf<sup>1</sup></a></li>
 			
 		
 			
@@ -419,6 +502,18 @@
 		
 			
 				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/router/" title="router">router<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
@@ -431,6 +526,14 @@
 		
 			
 				<li><a href="/tags/xrandr/" title="xrandr">xrandr<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/依赖注入/" title="依赖注入">依赖注入<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/设计模式/" title="设计模式">设计模式<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -481,7 +584,7 @@
 	
 	
 	<section class="info">
-		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+		<p> Hello, Here you are <br/>
 			This is my blog,believe it or not.</p>
 	</section>
 	 
