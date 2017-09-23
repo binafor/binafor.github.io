@@ -219,7 +219,7 @@
         <p>　　最近淘了个二手的显示器，把<code>linux</code>迁移后，发现<code>opensuse</code>居然不能识别出最高显示器分辨率，只能显示出++1024*768++分辨率，我一个23存（最高支持1080p)的器用这么低的分辨率感觉整个人都老了五十岁。<br>　　google几番，终于完美解决，下面是解决问题的正确方式：</p>
 <p>1.先查看系统的显示器。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user@localhost:~&gt;xrander</div></pre></td></tr></table></figure></p>
 <p>　　输出的结果应该显示有<code>LVDS1</code>和<code>VGA1</code>，笔记本一般通过VGA外接显示器，所以<code>VGA1</code>才是外接显示器。</p>
-<p>2.使用 gtf 命令生成一段有关新分辨率<br><strong>一开始我在网上乱复制的分辨率结果输出的时候就总是超出限制</strong>。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">user@localhost:~&gt;gtf 1920 1080 60</div><div class="line"><span class="meta">#</span> 1920x1080 @ 60.00 Hz (GTF) hsync: 67.08 kHz; pclk: 172.80 MHz</div><div class="line"><span class="meta">#</span> Modeline "1920x1080_60.00" 172.80 1920 2040 2248 2576 1080 1081 1084 1118 -HSync +Vsync</div></pre></td></tr></table></figure></p>
+<p>2.使用 gtf 命令生成一段有关新分辨率<br><strong>一开始我在网上乱复制的分辨率结果输出的时候就总是超出限制</strong>。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">user@localhost:~&gt;gtf 1920 1080 60</div><div class="line"><span class="meta">#</span><span class="bash"> 1920x1080 @ 60.00 Hz (GTF) hsync: 67.08 kHz; pclk: 172.80 MHz</span></div><div class="line"><span class="meta">#</span><span class="bash"> Modeline <span class="string">"1920x1080_60.00"</span> 172.80 1920 2040 2248 2576 1080 1081 1084 1118 -HSync +Vsync</span></div></pre></td></tr></table></figure></p>
 <p>modeline这行是等下来需要复制的。<br>3.添加一条新的显示模式<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user@localhost:~&gt;xrandr --newmode "1920x1080_60.00" 172.80 1920 2040 2248 2576 1080 1081 1084 1118 -HSync +Vsync</div></pre></td></tr></table></figure></p>
 <p>4.给外接显示器（VGA1）增加新的显示模式<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">user@localhost:~&gt;xrandr --addmode VGA1 "1920x1080_60.00" #VGA1应该是指你的外接显示器</div></pre></td></tr></table></figure></p>
 <p>此时,Display Monitor应该可以看到最高分辨率了.</p>
@@ -449,19 +449,11 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/route/" title="route">route<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/依赖注入/" title="依赖注入">依赖注入<sup>1</sup></a></li>
+				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Yaf/" title="Yaf">Yaf<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
 			
 		
 			
@@ -470,6 +462,22 @@
 		
 			
 				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/route/" title="route">route<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/PHP/" title="PHP">PHP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/依赖注入/" title="依赖注入">依赖注入<sup>1</sup></a></li>
 			
 		
 			
@@ -486,14 +494,6 @@
 		
 			
 				<li><a href="/tags/xrandr/" title="xrandr">xrandr<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
 			
 		
 		</ul>
