@@ -94,7 +94,11 @@
 </header>
     <div class="article-content">
         
-        <h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？<br>　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入一种面向对象编程提出的设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。<br>　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我可以吃米饭、饺子、水果等，但是我要求这些东西要能给我提供能量。那么这里抽象的是中餐，需求（接口）是补充能量，实际的动作（实例）是吃米饭、饺子、水果等。<br>　　<br>　　未完结待续。。。</p>
+        <h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？<br>　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入是面向对象编程提出的一种设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。<br>　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我可以吃米饭、饺子、水果等，但是我要求这些东西要能给我提供能量。那么这里抽象的是中餐，需求（接口）是补充能量，实际的动作（实例）是吃米饭、饺子、水果等。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryBuilder</span></span>&#123;</div><div class="line">	</div><div class="line">	<span class="keyword">protected</span> $connection;</div><div class="line">	</div><div class="line">	<span class="comment">//eg1</span></div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;connection = <span class="keyword">new</span> MysqlConnection();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">//eg2</span></div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(MysqlConnection $connection)</span></span>&#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;connection = $connection;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">select</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="comment">// $this-&gt;connection-&gt;select();</span></div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//eg2 注入依赖</span></div><div class="line">$QueryBuilder = <span class="keyword">new</span> QueryBuilder(<span class="keyword">new</span> MysqlConnection);</div></pre></td></tr></table></figure></p>
+<p>　　在这里，QueryBuilder 依赖了MYSQL数据库链接，eg1中，mysql 数据库链接需要在构造函数的内部来完成，这里是个强依赖。而 eg2 中，这里由构造函数来完成注入，我们只需要手动注入即可。这里有两点好处：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.解耦了强依赖 </div><div class="line">2.这里可以为单元测试等提供了 mock 基础。</div></pre></td></tr></table></figure></p>
+<p>　　但是，这里需要还有两个问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.需要手动注入 </div><div class="line">2.QueryBuilder 依赖了 MysqlConnection ，那么我们需要 MysqlConnection 怎么办？</div></pre></td></tr></table></figure></p>
+<p>　　提到了 DI ，那么不可避免的就会关联到Inversion Of Control（IOC）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）。通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中.</div></pre></td></tr></table></figure></p>
+<p>　　那么很显然，我们需要一个统一的调控系统来完成调控。这里简单来说，我们需要一个 IOC 容器来解析、管理统一的依赖对象关系解析。以 laravel 的 服务容器为例。<br>　　未完待续、、、<br>　　<br>参考：<br>    1.<a href="https://zh.wikipedia.org/wiki/控制反转" target="_blank" rel="external">控制反转</a></p>
 
         
         
@@ -282,51 +286,7 @@
 </header>
     <div class="article-content">
         
-        <p>　　第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。<br>　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，who care? 就这么愉快的决定剁手了。<br>　　废话不多说了，自己对路由器了解也不多，随意看了点，路由器上现在还是如意云修改的版本。 <img src="http://mtkxsw.qiniudn.com/ruyiyun1a.png" alt=""><br>　　 路由器固件主要看cpu，路由器上的cpu又分为几种架构，所对应的编译出来包也不同.如<br>   <a href="http://sourceforge.net/p/openwrt-dist/wiki/Home/" target="_blank" rel="external">http://sourceforge.net/p/openwrt-dist/wiki/Home/</a>所示</p>
-<table>
-<thead>
-<tr>
-<th>架构</th>
-<th>CPU型号</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ar71xx</td>
-<td>AR7xxx/AR9xxx/QCA9xxx</td>
-</tr>
-<tr>
-<td>atheros</td>
-<td>AR231x/AR5xxx</td>
-</tr>
-<tr>
-<td>bcm53xx</td>
-<td>BCM47xx/53xx (ARM CPU)</td>
-</tr>
-<tr>
-<td>brcm47xx</td>
-<td>BCM47xx/53xx (MIPS)</td>
-</tr>
-<tr>
-<td>brcm63xx</td>
-<td>BCM63xx</td>
-</tr>
-<tr>
-<td>ramips_24kec</td>
-<td>RT3x5x/RT5350/MT7620a/MT7620n/MT7621</td>
-</tr>
-</tbody>
-</table>
-<pre><code>本渣cpu对号入座应该是ramips架构了。。。这个千万不能搞错。
-</code></pre><p>　　 openwrt系统对应的包管理工具是opkg。跟<code>yum</code> <code>apt</code>类似，差不了太多，那就先 <code>opkg update</code>一下吧。结果发现自带意云官方源种的包少的可怜，那就只有自己亲自动手找个源了。问google好了，<a href="http://downloads.openwrt.org.cn/PandoraBox/ralink/mt7620/packages/" target="_blank" rel="external">PandoraBox</a>，就是你了。修改<code>/etc/opkg.conf</code>，一眼就看的明白。刚才的sourceforge页面的openwrt是已经编译好的最新版本(支持rc-md5)加密方式。就是这个了，把ipk包下载到U盘上，U盘已经自动挂载好，挂载的位置是 <code>/mnt/sda1</code>,有U盘还是比较方便的，至少不用憋屈在16M的小小空间里了。<br>   openwrt自带wget，直接cd到U盘目录(没有U盘直接用temp路径好了) <code>opkg install http://urlofshadowsocks</code>好了。。失败。。。不过<code>openwrt-dist</code>的这个作者给出了手动安装的说明：</p>
-<pre><code>手动安装
-解压 ipk 包: tar xzf {packagename}.ipk
-解压 data 包完成安装: tar xzf data.tar.gz -C /
-删除残留: rm control.tar.gz data.tar.gz debian-binary
-注: 上面 3 条命令注意复制完整并替换 packagename
-手动安装后没有卸载信息, 建议只在自动安装失败时使用
-如需要卸载, 可以直接删除步骤 2 中解压出的文件
-</code></pre><p>　　用7zip尝试打开压缩包，发现每个安装包基本大改即使打包　<code>control.tar.gz</code> <code>data.tar.gz</code> <code>debian-binary</code>　这三个文件，看手动安装的说明，<code>data.tar.gz</code>才是其中的核心包，再用7zip打开，一切明了了，安装过程大概就是解压data.tar.gz 里的对应目录到跟目录下。<br>　　现在可以测试下是否可以启动shadowsocks了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# ss-local</div></pre></td></tr></table></figure></p>
+        <p>　　第一次在路由器上玩openwrt，先前只玩过ddwrt,不过想想原理都差不多，都是个微型linux系统嘛。![](<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">```)</div><div class="line">　　最近对在路由器上部署shadowsocks产生了浓烈的兴趣。加之中期时在苏宁剁手买了个49包邮的如意云路由器。MT7620+64M RAM + 16M FLASH刷openwrt不是正好吗。各种大侠都不建议入手：说如意云公司要推出如意2，这是清仓货。但是反正我拿过来刷openwrt，who care? 就这么愉快的决定剁手了。</div><div class="line">　　废话不多说了，自己对路由器了解也不多，随意看了点，路由器上现在还是如意云修改的版本。 ![](http://mtkxsw.qiniudn.com/ruyiyun1a.png)</div><div class="line">　　 路由器固件主要看cpu，路由器上的cpu又分为几种架构，所对应的编译出来包也不同.如</div><div class="line">   [http://sourceforge.net/p/openwrt-dist/wiki/Home/](http://sourceforge.net/p/openwrt-dist/wiki/Home/)所示</div><div class="line">   </div><div class="line">| 架构 | CPU型号 |</div><div class="line">|-----|--------|</div><div class="line">|  ar71xx       |     AR7xxx/AR9xxx/QCA9xxx     |</div><div class="line">|  atheros   	|     AR231x/AR5xxx    |</div><div class="line">|  bcm53xx   	|     BCM47xx/53xx (ARM CPU)   |</div><div class="line">|  brcm47xx  	|     BCM47xx/53xx (MIPS)   |</div><div class="line">|  brcm63xx 	|     BCM63xx   |</div><div class="line">|  ramips_24kec |     RT3x5x/RT5350/MT7620a/MT7620n/MT7621   |</div><div class="line"></div><div class="line">	本渣cpu对号入座应该是ramips架构了。。。这个千万不能搞错。</div><div class="line">　　 openwrt系统对应的包管理工具是opkg。跟`yum` `apt`类似，差不了太多，那就先 `opkg update`一下吧。结果发现自带意云官方源种的包少的可怜，那就只有自己亲自动手找个源了。问google好了，[PandoraBox](http://downloads.openwrt.org.cn/PandoraBox/ralink/mt7620/packages/)，就是你了。修改` /etc/opkg.conf`，一眼就看的明白。刚才的sourceforge页面的openwrt是已经编译好的最新版本(支持rc-md5)加密方式。就是这个了，把ipk包下载到U盘上，U盘已经自动挂载好，挂载的位置是 `/mnt/sda1`,有U盘还是比较方便的，至少不用憋屈在16M的小小空间里了。</div><div class="line">   openwrt自带wget，直接cd到U盘目录(没有U盘直接用temp路径好了) `opkg install http://urlofshadowsocks `好了。。失败。。。不过`openwrt-dist`的这个作者给出了手动安装的说明：</div><div class="line">    </div><div class="line">    手动安装</div><div class="line">    解压 ipk 包: tar xzf &#123;packagename&#125;.ipk</div><div class="line">	解压 data 包完成安装: tar xzf data.tar.gz -C /</div><div class="line">	删除残留: rm control.tar.gz data.tar.gz debian-binary</div><div class="line">	注: 上面 3 条命令注意复制完整并替换 packagename</div><div class="line">	手动安装后没有卸载信息, 建议只在自动安装失败时使用</div><div class="line">	如需要卸载, 可以直接删除步骤 2 中解压出的文件</div><div class="line"></div><div class="line">　　用7zip尝试打开压缩包，发现每个安装包基本大改即使打包　`control.tar.gz` `data.tar.gz` `debian-binary`　这三个文件，看手动安装的说明，`data.tar.gz`才是其中的核心包，再用7zip打开，一切明了了，安装过程大概就是解压data.tar.gz 里的对应目录到跟目录下。</div><div class="line">　　现在可以测试下是否可以启动shadowsocks了：</div><div class="line">```shell</div><div class="line">root@xRouter:~# ss-local</div></pre></td></tr></table></figure></p>
 <p>　　提示缺少<code>libpolarssl</code>,依葫芦画瓢装一次，提示缺少<code>libpolarssl.so.7</code>,<code>ln -s</code> 欺骗一个好了;<code>ss-local</code>现在启动应该不会报错了，现在应该把自己的shadowsocks配置信息填写到<code>/etc/shadowsocks.conf</code>中，json配置格式，注意用<code>双引号</code>。<br>　　启动shadowsocks:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# /etc/init.d/shadowsocks start  #启动shadowsocks</div><div class="line">root@xRouter:~# /etc/init.d/shadowsocks enable #设置路由器开机自启shadowsocks</div></pre></td></tr></table></figure></p>
 <p>　　现在你设置的<code>ss-local</code>端口应该打开了，<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@xRouter:~# netstat -ntlp</div></pre></td></tr></table></figure></p>
 <p>　　此处应该显示你的端口已经开放，在PC上验证下<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">telnet routerIP port</div></pre></td></tr></table></figure></p>
@@ -349,7 +309,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/shadowsocks/">shadowsocks</a><a href="/tags/openwrt/">openwrt</a><a href="/tags/router/">router</a>
+  <span></span> <a href="/tags/shadowsocks/">shadowsocks</a><a href="/tags/openwrt/">openwrt</a><a href="/tags/route/">route</a>
   </div>
 
 </div>
@@ -489,11 +449,19 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
+				<li><a href="/tags/route/" title="route">route<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/Yaf/" title="Yaf">Yaf<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
 			
 		
 			
@@ -502,14 +470,6 @@
 		
 			
 				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/router/" title="router">router<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
 			
 		
 			
