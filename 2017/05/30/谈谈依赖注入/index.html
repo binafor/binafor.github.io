@@ -18,7 +18,7 @@
 <meta property="og:url" content="http://binafor.github.io/2017/05/30/谈谈依赖注入/index.html">
 <meta property="og:site_name" content="晚期拖延症患者">
 <meta property="og:description" content="什么是依赖注入　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入是面向对象编程提出的一种设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，">
-<meta property="og:updated_time" content="2017-09-23T13:56:18.000Z">
+<meta property="og:updated_time" content="2017-11-28T05:05:54.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈依赖注入">
 <meta name="twitter:description" content="什么是依赖注入　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入是面向对象编程提出的一种设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，">
@@ -103,7 +103,7 @@
 		
 		<h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>　　依赖注入（DI）听起来很高端的样子，那么依赖注入到底是个什么东西呢？<br>　　从字面上来说，依赖注入就是对依赖的东西进行注入。依赖注入是面向对象编程提出的一种设计模式，它最终的目的是帮助开发者开发出松耦合、可维护、可测试的代码。<br>　　说了这么多，可能还是没有让大家形象的理解，举个现实中的例子：我要吃中餐了。我们来分析这个需求，人之所以要进食时因为需要补充能量。那么中午吃什么这里还不固定，我可以吃米饭、饺子、水果等，但是我要求这些东西要能给我提供能量。那么这里抽象的是中餐，需求（接口）是补充能量，实际的动作（实例）是吃米饭、饺子、水果等。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryBuilder</span></span>&#123;</div><div class="line">	</div><div class="line">	<span class="keyword">protected</span> $connection;</div><div class="line">	</div><div class="line">	<span class="comment">//eg1</span></div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;connection = <span class="keyword">new</span> MysqlConnection();</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">//eg2</span></div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(MysqlConnection $connection)</span></span>&#123;</div><div class="line">		<span class="keyword">$this</span>-&gt;connection = $connection;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">select</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="comment">// $this-&gt;connection-&gt;select();</span></div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//eg2 注入依赖</span></div><div class="line">$QueryBuilder = <span class="keyword">new</span> QueryBuilder(<span class="keyword">new</span> MysqlConnection);</div></pre></td></tr></table></figure></p>
 <p>　　在这里，QueryBuilder 依赖了MYSQL数据库链接，eg1中，mysql 数据库链接需要在构造函数的内部来完成，这里是个强依赖。而 eg2 中，这里由构造函数来完成注入，我们只需要手动注入即可。这里有两点好处：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.解耦了强依赖 </div><div class="line">2.这里可以为单元测试等提供了 mock 基础。</div></pre></td></tr></table></figure></p>
-<p>　　但是，这里需要还有两个问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.需要手动注入 </div><div class="line">2.QueryBuilder 依赖了 MysqlConnection ，那么我们需要 SqliteConnection 怎么办？</div></pre></td></tr></table></figure></p>
+<p>　　但是，这里需要还有两个问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.需要手动注入 </div><div class="line">2.QueryBuilder 依赖了 MysqlConnection ，那么我们需要 SqliteConnection 怎么办？或者说我们这里需要的只是一个抽象的 数据库连接 接口？</div></pre></td></tr></table></figure></p>
 <p>　　提到了 DI ，那么不可避免的就会关联到Inversion Of Control（IOC）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）。通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中.</div></pre></td></tr></table></figure></p>
 <p>　　那么很显然，我们需要一个统一的调控系统来完成调控。这里简单来说，我们需要一个 IOC 容器来解析、管理统一的依赖对象关系。以 laravel 的 服务容器为例。<br>　　未完待续、、、<br>　　<br>参考：<br>    1.<a href="https://zh.wikipedia.org/wiki/控制反转" target="_blank" rel="external">控制反转</a></p>
   
@@ -197,7 +197,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
+				<li><a href="/tags/xrandr/" title="xrandr">xrandr<sup>1</sup></a></li>
 			
 		
 			
@@ -205,19 +205,19 @@
 			
 		
 			
-				<li><a href="/tags/shadowsocks/" title="shadowsocks">shadowsocks<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/route/" title="route">route<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/vps/" title="vps">vps<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/blog/" title="blog">blog<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/opensuse/" title="opensuse">opensuse<sup>1</sup></a></li>
 			
 		
 			
@@ -233,15 +233,15 @@
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+				<li><a href="/tags/shadowsocks/" title="shadowsocks">shadowsocks<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/opensuse/" title="opensuse">opensuse<sup>1</sup></a></li>
+				<li><a href="/tags/openwrt/" title="openwrt">openwrt<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/xrandr/" title="xrandr">xrandr<sup>1</sup></a></li>
+				<li><a href="/tags/route/" title="route">route<sup>1</sup></a></li>
 			
 		
 		</ul>
